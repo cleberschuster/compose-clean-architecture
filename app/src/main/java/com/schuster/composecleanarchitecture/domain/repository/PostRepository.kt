@@ -1,6 +1,6 @@
-package br.com.schuster.androidcleanarchitecture.domain.repository
+package com.schuster.composecleanarchitecture.domain.repository
 
-import br.com.schuster.androidcleanarchitecture.presentation.model.ObjectPresentation
+import com.schuster.composecleanarchitecture.presentation.model.ObjectPresentation
 import kotlinx.coroutines.flow.Flow
 
 interface PostRepository {

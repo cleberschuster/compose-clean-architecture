@@ -1,6 +1,6 @@
-package br.com.schuster.androidcleanarchitecture.data.api
+package com.schuster.composecleanarchitecture.data.api
 
-import br.com.schuster.androidcleanarchitecture.data.model.PostResponse
+import com.schuster.composecleanarchitecture.data.model.PostResponse
 import retrofit2.http.GET
 import retrofit2.http.Path
 

@@ -1,8 +1,8 @@
-package br.com.schuster.androidcleanarchitecture.domain.mapper
+package com.schuster.composecleanarchitecture.domain.mapper
 
-import br.com.schuster.androidcleanarchitecture.domain.model.ObjectDomain
-import br.com.schuster.androidcleanarchitecture.presentation.model.ObjectPresentation
-import br.com.schuster.androidcleanarchitecture.utils.Mapper
+import com.schuster.composecleanarchitecture.domain.model.ObjectDomain
+import com.schuster.composecleanarchitecture.presentation.model.ObjectPresentation
+import com.schuster.composecleanarchitecture.utils.Mapper
 
 class ObjectToPresentationMapper: Mapper<ObjectDomain, ObjectPresentation> {
 

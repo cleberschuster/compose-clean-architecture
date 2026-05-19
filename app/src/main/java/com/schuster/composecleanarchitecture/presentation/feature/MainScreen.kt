@@ -1,4 +1,4 @@
-package br.com.schuster.androidcleanarchitecture.presentation.feature
+package com.schuster.composecleanarchitecture.presentation.feature
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -33,12 +33,12 @@ import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import br.com.schuster.androidcleanarchitecture.presentation.components.ErrorScreen
-import br.com.schuster.androidcleanarchitecture.presentation.components.ErrorScreenInputSearch
-import br.com.schuster.androidcleanarchitecture.presentation.components.SearchTopBar
-import br.com.schuster.androidcleanarchitecture.presentation.components.ShimmerScreen
-import br.com.schuster.androidcleanarchitecture.presentation.ui.theme.PurpleGrey40
-import br.com.schuster.androidcleanarchitecture.utils.TestTags
+import com.schuster.composecleanarchitecture.presentation.components.ErrorScreen
+import com.schuster.composecleanarchitecture.presentation.components.ErrorScreenInputSearch
+import com.schuster.composecleanarchitecture.presentation.components.SearchTopBar
+import com.schuster.composecleanarchitecture.presentation.components.ShimmerScreen
+import com.schuster.composecleanarchitecture.presentation.ui.theme.PurpleGrey40
+import com.schuster.composecleanarchitecture.utils.TestTags
 import org.koin.androidx.compose.koinViewModel
 
 
@@ -63,7 +63,7 @@ fun MainScreenContent(
     viewModel: MainViewModel,
     uiStateValue: UiState,
     snackbarHostState: SnackbarHostState,
-    onEvent: ( MainScreenEvent ) -> Unit
+    onEvent: (MainScreenEvent) -> Unit
 ) {
 
     val context = LocalContext.current

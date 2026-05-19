@@ -1,4 +1,4 @@
-package br.com.schuster.androidcleanarchitecture.presentation.feature
+package com.schuster.composecleanarchitecture.presentation.feature
 
 sealed interface MainScreenEvent {
     data class OnValueChange(val searchText: String) : MainScreenEvent

@@ -1,4 +1,4 @@
-package br.com.schuster.androidcleanarchitecture.presentation.ui.theme
+package com.schuster.composecleanarchitecture.presentation.ui.theme
 
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme

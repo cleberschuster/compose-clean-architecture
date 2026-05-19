@@ -1,11 +1,4 @@
-package br.com.schuster.androidcleanarchitecture.data.retrofit
-
-import android.content.Context
-import com.google.gson.Gson
-import com.google.gson.GsonBuilder
-import okhttp3.OkHttpClient
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+package com.schuster.composecleanarchitecture.data.retrofit
 
 /*
 * Essa classe é responsável pela criação da instância do Retrofit.

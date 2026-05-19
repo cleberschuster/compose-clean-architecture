@@ -1,4 +1,4 @@
-package br.com.schuster.androidcleanarchitecture.presentation.feature
+package com.schuster.composecleanarchitecture.presentation.feature
 
 import android.content.Context
 import androidx.annotation.StringRes

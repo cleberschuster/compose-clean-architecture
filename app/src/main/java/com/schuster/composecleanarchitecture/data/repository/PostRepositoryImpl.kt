@@ -1,9 +1,9 @@
-package br.com.schuster.androidcleanarchitecture.data.repository
+package com.schuster.composecleanarchitecture.data.repository
 
-import br.com.schuster.androidcleanarchitecture.data.datasource.RemotePostDataSource
-import br.com.schuster.androidcleanarchitecture.domain.mapper.ObjectToPresentationMapper
-import br.com.schuster.androidcleanarchitecture.domain.repository.PostRepository
-import br.com.schuster.androidcleanarchitecture.presentation.model.ObjectPresentation
+import com.schuster.composecleanarchitecture.data.datasource.RemotePostDataSource
+import com.schuster.composecleanarchitecture.domain.mapper.ObjectToPresentationMapper
+import com.schuster.composecleanarchitecture.domain.repository.PostRepository
+import com.schuster.composecleanarchitecture.presentation.model.ObjectPresentation
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow

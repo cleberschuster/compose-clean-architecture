@@ -1,4 +1,4 @@
-package br.com.schuster.androidcleanarchitecture.presentation.feature
+package com.schuster.composecleanarchitecture.presentation.feature
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -6,8 +6,8 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.schuster.androidcleanarchitecture.R
-import br.com.schuster.androidcleanarchitecture.domain.usecase.GetPostUseCase
-import br.com.schuster.androidcleanarchitecture.utils.handleApiError
+import com.schuster.composecleanarchitecture.domain.usecase.GetPostUseCase
+import com.schuster.composecleanarchitecture.utils.handleApiError
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted

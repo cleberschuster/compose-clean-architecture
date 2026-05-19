@@ -1,4 +1,4 @@
-package br.com.schuster.androidcleanarchitecture.presentation.components
+package com.schuster.composecleanarchitecture.presentation.components
 
 
 import androidx.compose.foundation.layout.Box

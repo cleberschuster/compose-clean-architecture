@@ -1,7 +1,7 @@
-package br.com.schuster.androidcleanarchitecture.data.datasource
+package com.schuster.composecleanarchitecture.data.datasource
 
-import br.com.schuster.androidcleanarchitecture.data.api.PostApiService
-import br.com.schuster.androidcleanarchitecture.data.mapper.ObjectToDomainMapper
+import com.schuster.composecleanarchitecture.data.api.PostApiService
+import com.schuster.composecleanarchitecture.data.mapper.ObjectToDomainMapper
 
 /*
 * Esta classe é responsável por chamar a API.

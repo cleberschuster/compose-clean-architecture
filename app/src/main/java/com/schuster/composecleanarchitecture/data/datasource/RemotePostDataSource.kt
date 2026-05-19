@@ -1,6 +1,6 @@
-package br.com.schuster.androidcleanarchitecture.data.datasource
+package com.schuster.composecleanarchitecture.data.datasource
 
-import br.com.schuster.androidcleanarchitecture.domain.model.ObjectDomain
+import com.schuster.composecleanarchitecture.domain.model.ObjectDomain
 
 interface RemotePostDataSource {
 

@@ -1,6 +1,6 @@
-package br.com.schuster.androidcleanarchitecture.presentation.feature
+package com.schuster.composecleanarchitecture.presentation.feature
 
-import br.com.schuster.androidcleanarchitecture.presentation.model.ObjectPresentation
+import com.schuster.composecleanarchitecture.presentation.model.ObjectPresentation
 
 data class UiState(
     val status: Status = Status.IDLE,

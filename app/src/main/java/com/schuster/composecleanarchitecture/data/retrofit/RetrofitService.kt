@@ -1,4 +1,4 @@
-package br.com.schuster.androidcleanarchitecture.data.retrofit
+package com.schuster.composecleanarchitecture.data.retrofit
 
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor

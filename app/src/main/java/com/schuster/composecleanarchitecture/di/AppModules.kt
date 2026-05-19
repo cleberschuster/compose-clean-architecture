@@ -1,14 +1,14 @@
-package br.com.schuster.androidcleanarchitecture.di
+package com.schuster.composecleanarchitecture.di
 
-import br.com.schuster.androidcleanarchitecture.data.api.PostApiService
-import br.com.schuster.androidcleanarchitecture.data.datasource.RemotePostDataSource
-import br.com.schuster.androidcleanarchitecture.data.datasource.RemotePostDataSourceImpl
-import br.com.schuster.androidcleanarchitecture.data.repository.PostRepositoryImpl
-import br.com.schuster.androidcleanarchitecture.data.retrofit.RetrofitService
-import br.com.schuster.androidcleanarchitecture.domain.repository.PostRepository
-import br.com.schuster.androidcleanarchitecture.domain.usecase.GetPostUseCase
-import br.com.schuster.androidcleanarchitecture.domain.usecase.GetPostUseCaseImpl
-import br.com.schuster.androidcleanarchitecture.presentation.feature.MainViewModel
+import com.schuster.composecleanarchitecture.data.api.PostApiService
+import com.schuster.composecleanarchitecture.data.datasource.RemotePostDataSource
+import com.schuster.composecleanarchitecture.data.datasource.RemotePostDataSourceImpl
+import com.schuster.composecleanarchitecture.data.repository.PostRepositoryImpl
+import com.schuster.composecleanarchitecture.data.retrofit.RetrofitService
+import com.schuster.composecleanarchitecture.domain.repository.PostRepository
+import com.schuster.composecleanarchitecture.domain.usecase.GetPostUseCase
+import com.schuster.composecleanarchitecture.domain.usecase.GetPostUseCaseImpl
+import com.schuster.composecleanarchitecture.presentation.feature.MainViewModel
 import kotlinx.coroutines.Dispatchers
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module

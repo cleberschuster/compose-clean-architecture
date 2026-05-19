@@ -1,8 +1,8 @@
-package br.com.schuster.androidcleanarchitecture.data.mapper
+package com.schuster.composecleanarchitecture.data.mapper
 
-import br.com.schuster.androidcleanarchitecture.data.model.PostResponse
-import br.com.schuster.androidcleanarchitecture.domain.model.ObjectDomain
-import br.com.schuster.androidcleanarchitecture.utils.Mapper
+import com.schuster.composecleanarchitecture.data.model.PostResponse
+import com.schuster.composecleanarchitecture.domain.model.ObjectDomain
+import com.schuster.composecleanarchitecture.utils.Mapper
 
 /*
 * Esta classe transforma um objeto da camada de DATA para um objeto da camada de DOMAIN.

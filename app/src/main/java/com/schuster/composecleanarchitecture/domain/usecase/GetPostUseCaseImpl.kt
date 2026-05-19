@@ -1,7 +1,7 @@
-package br.com.schuster.androidcleanarchitecture.domain.usecase
+package com.schuster.composecleanarchitecture.domain.usecase
 
-import br.com.schuster.androidcleanarchitecture.domain.repository.PostRepository
-import br.com.schuster.androidcleanarchitecture.presentation.model.ObjectPresentation
+import com.schuster.composecleanarchitecture.domain.repository.PostRepository
+import com.schuster.composecleanarchitecture.presentation.model.ObjectPresentation
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filter
 

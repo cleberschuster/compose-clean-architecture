@@ -1,4 +1,4 @@
-package br.com.schuster.androidcleanarchitecture.presentation.components
+package com.schuster.composecleanarchitecture.presentation.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -20,7 +20,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import br.com.schuster.androidcleanarchitecture.utils.TestTags
+import com.schuster.composecleanarchitecture.utils.TestTags
 
 @Composable
 fun ShimmerScreen() {

@@ -1,6 +1,6 @@
-package br.com.schuster.androidcleanarchitecture.domain.usecase
+package com.schuster.composecleanarchitecture.domain.usecase
 
-import br.com.schuster.androidcleanarchitecture.presentation.model.ObjectPresentation
+import com.schuster.composecleanarchitecture.presentation.model.ObjectPresentation
 import kotlinx.coroutines.flow.Flow
 
 /*

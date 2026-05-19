@@ -1,4 +1,4 @@
-package br.com.schuster.androidcleanarchitecture.domain.model
+package com.schuster.composecleanarchitecture.domain.model
 
 import com.google.gson.annotations.SerializedName
 

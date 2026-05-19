@@ -1,4 +1,4 @@
-package br.com.schuster.androidcleanarchitecture.utils
+package com.schuster.composecleanarchitecture.utils
 
 import retrofit2.HttpException
 import java.io.IOException
