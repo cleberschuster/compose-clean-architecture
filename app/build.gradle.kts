@@ -1,9 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.compose)
-    alias(libs.plugins.jetbrains.kotlin.android)
-    kotlin("plugin.serialization") version libs.versions.kotlin
-
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
