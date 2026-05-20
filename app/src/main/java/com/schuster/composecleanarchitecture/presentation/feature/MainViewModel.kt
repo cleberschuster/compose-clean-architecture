@@ -5,7 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import br.com.schuster.androidcleanarchitecture.R
+import com.schuster.composecleanarchitecture.R
 import com.schuster.composecleanarchitecture.domain.usecase.GetPostUseCase
 import com.schuster.composecleanarchitecture.utils.handleApiError
 import kotlinx.coroutines.channels.Channel

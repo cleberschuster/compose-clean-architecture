@@ -29,7 +29,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import br.com.schuster.androidcleanarchitecture.R
+import com.schuster.composecleanarchitecture.R
 
 @Composable
 fun SearchTopBar(
