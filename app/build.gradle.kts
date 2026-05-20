@@ -51,6 +51,29 @@ dependencies {
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
+
+    // Kotlinx Serialization
+    implementation(libs.kotlinx.serialization.json)
+
+    // Navigation
+    implementation(libs.androidx.navigation.compose)
+
+    // Koin
+    implementation(libs.koin.android)
+    implementation(libs.koin.android.ext)
+    implementation(libs.koin.androidx.workmanager)
+    implementation(libs.koin.androidx.compose)
+
+    implementation(libs.androidx.work.runtime.ktx)
+
+    // Gson || Retrofit
+    implementation(libs.okhttp)
+    implementation(libs.converter.gson)
+    implementation(libs.gson)
+    implementation(libs.retrofit)
+
+    implementation(libs.logging.interceptor)
+
     testImplementation(libs.junit)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
