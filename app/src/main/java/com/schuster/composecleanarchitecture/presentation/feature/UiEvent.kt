@@ -6,7 +6,7 @@ import androidx.annotation.StringRes
 sealed class UiEvent {
 
     class ShowSnackbar(
-        @StringRes val resId: Int,
+        @param:StringRes val resId: Int,
         vararg val args: Any
     ) : UiEvent()
 
