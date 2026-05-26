@@ -1,1 +1,1 @@
-App com foco na implementação de Clean Architecture, chamadas a api, kotlin Flow e telas com Jetpack Compose, MVVM, MVI.
+App com foco na implementação de Clean Architecture, MVI, chamadas a Api, kotlin Flow e telas com Jetpack Compose.
