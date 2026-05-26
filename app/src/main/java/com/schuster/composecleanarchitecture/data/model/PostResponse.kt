@@ -25,7 +25,7 @@ data class PostResponse(
     val comment: String? = null
 )
 
-//Mapeamento DATA -> DOMAIN: Agora acontece diretamente no PostResponse.kt via função de extensão .toDomain().
+//Mapeamento DATA -> DOMAIN: Diretamente no PostResponse.kt via função de extensão .toDomain().
 fun PostResponse.toDomain() = ObjectDomain(
     postId = postId,
     id = id,

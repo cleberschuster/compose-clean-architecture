@@ -73,7 +73,7 @@ class MainViewModel(private val useCase: GetPostUseCase) : ViewModel() {
     }
 
 
-    // Mapeamento DOMAIN -> PRESENTATION: Agora está encapsulado dentro do MainViewModel.kt via função de extensão .toPresentation().
+    // Mapeamento DOMAIN -> PRESENTATION: Encapsulado dentro do MainViewModel.kt via função de extensão .toPresentation().
     private fun ObjectDomain.toPresentation() = ObjectPresentation(
         postId = postId,
         id = id,
