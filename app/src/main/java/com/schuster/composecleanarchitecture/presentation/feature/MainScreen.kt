@@ -77,7 +77,7 @@ fun MainScreenContent(
             when (uiEffect) {
                 is MainUiEffect.ShowSnackbar -> {
                     snackbarHostState.showSnackbar(
-                        message = context.getString(uiEffect.resId, *uiEffect.args)
+                        message = uiEffect.asString(context)
                     )
                 }
             }
