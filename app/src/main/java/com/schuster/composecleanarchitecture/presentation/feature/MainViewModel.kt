@@ -28,7 +28,10 @@ class MainViewModel(private val useCase: GetPostUseCase) : ViewModel() {
     fun onEvent(event: MainScreenEvent) {
         when (event) {
             is MainScreenEvent.OnValueChange -> {
-                _uiState.update { it.copy(textSearch = event.searchText.trim()) }
+                // Filtra para manter APENAS dígitos numéricos
+                val onlyNumbers = event.searchText.filter { it.isDigit() }
+                _uiState.update { it.copy(textSearch = onlyNumbers) }
+//                _uiState.update { it.copy(textSearch = event.searchText.trim()) }
             }
             is MainScreenEvent.OnSearch -> {
                 getNewPost(_uiState.value.textSearch)
@@ -73,7 +76,7 @@ class MainViewModel(private val useCase: GetPostUseCase) : ViewModel() {
     }
 
 
-    // Mapeamento DOMAIN -> PRESENTATION: Encapsulado dentro do MainViewModel.kt via função de extensão .toPresentation().
+    // Mapeamento DOMAIN -> PRESENTATION: Agora está encapsulado dentro do MainViewModel.kt via função de extensão .toPresentation().
     private fun ObjectDomain.toPresentation() = ObjectPresentation(
         postId = postId,
         id = id,
