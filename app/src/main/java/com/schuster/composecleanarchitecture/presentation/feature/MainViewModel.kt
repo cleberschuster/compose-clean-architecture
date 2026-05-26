@@ -1,93 +1,82 @@
 package com.schuster.composecleanarchitecture.presentation.feature
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.schuster.composecleanarchitecture.R
+import com.schuster.composecleanarchitecture.domain.model.ObjectDomain
 import com.schuster.composecleanarchitecture.domain.usecase.GetPostUseCase
+import com.schuster.composecleanarchitecture.presentation.model.ObjectPresentation
 import com.schuster.composecleanarchitecture.utils.handleApiError
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class MainViewModel(private val useCase: GetPostUseCase) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(
-        // UiState() ja inicializei os valores na propria classe
-        UiState()
-    )
+    private val _uiState = MutableStateFlow(UiState())
+    val uiState = _uiState.asStateFlow()
 
-    val uiState = _uiState.stateIn(
-        viewModelScope,
-        SharingStarted.Eagerly,
-        initialValue = _uiState.value
-    )
-
-    var textSearch by mutableStateOf("")
-    private set
-
-    private var _uiEvent = Channel<UiEvent>()
-    val uiEvent = _uiEvent.receiveAsFlow()
+    private val _uiEffect = Channel<MainUiEffect>()
+    val uiEffect = _uiEffect.receiveAsFlow()
 
     fun onEvent(event: MainScreenEvent) {
         when (event) {
-
             is MainScreenEvent.OnValueChange -> {
-                textSearch = event.searchText.trim()
+                _uiState.update { it.copy(textSearch = event.searchText.trim()) }
             }
             is MainScreenEvent.OnSearch -> {
-                getNewPost(textSearch)
+                getNewPost(_uiState.value.textSearch)
             }
             is MainScreenEvent.OnClickSearch -> {
-                getNewPost(textSearch)
+                getNewPost(_uiState.value.textSearch)
             }
         }
     }
 
     private fun getNewPost(id: String) {
+        if (id.isBlank()) {
+            viewModelScope.launch {
+                _uiEffect.send(MainUiEffect.ShowSnackbar(resId = R.string.search_not_empty))
+                _uiState.update { it.copy(status = Status.INPUT_TEXT_ERROR) }
+            }
+            return
+        }
 
         _uiState.update { it.copy(status = Status.LOADING) }
 
         viewModelScope.launch {
-
-            if (textSearch.isBlank()) {
-                _uiEvent.send(UiEvent.ShowSnackbar(resId = R.string.search_not_empty))
-
-                _uiState.update { currentState ->
-                    currentState.copy(
-                        status = Status.INPUT_TEXT_ERROR,
-                    )
-                }
-                return@launch
-            }
-
             useCase.invoke(id.toInt())
-                .onEach { result ->
+                .onEach { domainResult ->
                     _uiState.update { currentState ->
                         currentState.copy(
                             status = Status.SUCCESS,
-                            data = result,
+                            data = domainResult.toPresentation(),
                         )
                     }
                 }
-                .catch {
+                .catch { error ->
                     _uiState.update { currentState ->
                         currentState.copy(
                             status = Status.ERROR,
-                            errorMessage = handleApiError(it).toString()
+                            errorMessage = handleApiError(error).toString()
                         )
                     }
                 }
                 .collect()
         }
     }
+
+    private fun ObjectDomain.toPresentation() = ObjectPresentation(
+        postId = postId,
+        id = id,
+        name = name,
+        email = email,
+        comment = comment
+    )
 }

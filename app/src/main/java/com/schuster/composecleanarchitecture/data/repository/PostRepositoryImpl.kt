@@ -1,9 +1,8 @@
 package com.schuster.composecleanarchitecture.data.repository
 
 import com.schuster.composecleanarchitecture.data.datasource.RemotePostDataSource
-import com.schuster.composecleanarchitecture.domain.mapper.ObjectToPresentationMapper
+import com.schuster.composecleanarchitecture.domain.model.ObjectDomain
 import com.schuster.composecleanarchitecture.domain.repository.PostRepository
-import com.schuster.composecleanarchitecture.presentation.model.ObjectPresentation
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -25,13 +24,9 @@ class PostRepositoryImpl(
     private val dispatcherIO: CoroutineDispatcher
 ) : PostRepository {
 
-    private val mapper: ObjectToPresentationMapper = ObjectToPresentationMapper()
-
-    override suspend fun getPost(id: Int): Flow<ObjectPresentation> = flow {
-
-        val response = mapper.map(remoteDataSource.getPost(id))
+    override suspend fun getPost(id: Int): Flow<ObjectDomain> = flow {
+        val response = remoteDataSource.getPost(id)
         emit(response)
-
     }.flowOn(dispatcherIO)
 }
 

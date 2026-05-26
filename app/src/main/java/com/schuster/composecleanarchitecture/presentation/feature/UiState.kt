@@ -5,7 +5,8 @@ import com.schuster.composecleanarchitecture.presentation.model.ObjectPresentati
 data class UiState(
     val status: Status = Status.IDLE,
     val data: ObjectPresentation? = null,
-    val errorMessage: String ? = null,
+    val errorMessage: String? = null,
+    val textSearch: String = ""
 )
 
 enum class Status {

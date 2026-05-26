@@ -1,6 +1,6 @@
 package com.schuster.composecleanarchitecture.domain.usecase
 
-import com.schuster.composecleanarchitecture.presentation.model.ObjectPresentation
+import com.schuster.composecleanarchitecture.domain.model.ObjectDomain
 import kotlinx.coroutines.flow.Flow
 
 /*
@@ -12,5 +12,5 @@ import kotlinx.coroutines.flow.Flow
 */
 
 interface GetPostUseCase {
-    suspend operator fun invoke(id: Int): Flow<ObjectPresentation>
+    suspend operator fun invoke(id: Int): Flow<ObjectDomain>
 }

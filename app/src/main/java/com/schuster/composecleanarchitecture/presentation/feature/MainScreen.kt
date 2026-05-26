@@ -67,18 +67,17 @@ fun MainScreenContent(
 ) {
 
     val context = LocalContext.current
-    val searchText = viewModel.textSearch
     val keyboardController = LocalSoftwareKeyboardController.current
     val lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current
 
     // official docomentation:
     // https://developer.android.com/develop/ui/compose/side-effects?hl=pt-br#launchedeffect
     LaunchedEffect(Unit) {
-        viewModel.uiEvent.collect { uiEvent ->
-            when (uiEvent) {
-                is UiEvent.ShowSnackbar -> {
+        viewModel.uiEffect.collect { uiEffect ->
+            when (uiEffect) {
+                is MainUiEffect.ShowSnackbar -> {
                     snackbarHostState.showSnackbar(
-                        message = uiEvent.asString(context)
+                        message = context.getString(uiEffect.resId, *uiEffect.args)
                     )
                 }
             }
@@ -114,7 +113,7 @@ fun MainScreenContent(
         topBar = {
             TopAppBar( {
                 SearchTopBar(
-                    currentSearchText = searchText,
+                    currentSearchText = uiStateValue.textSearch,
                     onSearchTextChanged = {
                         onEvent(MainScreenEvent.OnValueChange(it))
                     },
