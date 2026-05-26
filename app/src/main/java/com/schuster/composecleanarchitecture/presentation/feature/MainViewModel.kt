@@ -31,7 +31,6 @@ class MainViewModel(private val useCase: GetPostUseCase) : ViewModel() {
                 // Filtra para manter APENAS dígitos numéricos
                 val onlyNumbers = event.searchText.filter { it.isDigit() }
                 _uiState.update { it.copy(textSearch = onlyNumbers) }
-//                _uiState.update { it.copy(textSearch = event.searchText.trim()) }
             }
             is MainScreenEvent.OnSearch -> {
                 getNewPost(_uiState.value.textSearch)
@@ -43,17 +42,15 @@ class MainViewModel(private val useCase: GetPostUseCase) : ViewModel() {
     }
 
     private fun getNewPost(id: String) {
-        if (id.isBlank()) {
-            viewModelScope.launch {
+        viewModelScope.launch {
+            if (id.isBlank()) {
                 _uiEffect.send(MainUiEffect.ShowSnackbar(resId = R.string.search_not_empty))
                 _uiState.update { it.copy(status = Status.INPUT_TEXT_ERROR) }
+                return@launch
             }
-            return
-        }
 
-        _uiState.update { it.copy(status = Status.LOADING) }
+            _uiState.update { it.copy(status = Status.LOADING) }
 
-        viewModelScope.launch {
             useCase.invoke(id.toInt())
                 .onEach { domainResult ->
                     _uiState.update { currentState ->
@@ -76,7 +73,7 @@ class MainViewModel(private val useCase: GetPostUseCase) : ViewModel() {
     }
 
 
-    // Mapeamento DOMAIN -> PRESENTATION: Agora está encapsulado dentro do MainViewModel.kt via função de extensão .toPresentation().
+    // Mapeamento DOMAIN -> PRESENTATION: Encapsulado dentro do MainViewModel.kt via função de extensão .toPresentation().
     private fun ObjectDomain.toPresentation() = ObjectPresentation(
         postId = postId,
         id = id,
