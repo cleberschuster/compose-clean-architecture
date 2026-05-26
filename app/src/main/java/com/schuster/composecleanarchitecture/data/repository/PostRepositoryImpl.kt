@@ -1,7 +1,7 @@
 package com.schuster.composecleanarchitecture.data.repository
 
 import com.schuster.composecleanarchitecture.data.api.PostApiService
-import com.schuster.composecleanarchitecture.data.mapper.ObjectToDomainMapper
+import com.schuster.composecleanarchitecture.data.model.toDomain
 import com.schuster.composecleanarchitecture.domain.model.ObjectDomain
 import com.schuster.composecleanarchitecture.domain.repository.PostRepository
 import kotlinx.coroutines.CoroutineDispatcher
@@ -14,11 +14,9 @@ class PostRepositoryImpl(
     private val dispatcherIO: CoroutineDispatcher
 ) : PostRepository {
 
-    private val mapper = ObjectToDomainMapper()
-
     override suspend fun getPost(id: Int): Flow<ObjectDomain> = flow {
         val response = api.getPost(id)
-        emit(mapper.map(response))
+        emit(response.toDomain())
     }.flowOn(dispatcherIO)
 }
 

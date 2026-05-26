@@ -1,6 +1,7 @@
 package com.schuster.composecleanarchitecture.data.model
 
 import com.google.gson.annotations.SerializedName
+import com.schuster.composecleanarchitecture.domain.model.ObjectDomain
 
 /*
 * Este objeto é o que será retornado por sua API.
@@ -22,4 +23,13 @@ data class PostResponse(
 
     @SerializedName("body")
     val comment: String? = null
+)
+
+//Mapeamento DATA -> DOMAIN: Agora acontece diretamente no PostResponse.kt via função de extensão .toDomain().
+fun PostResponse.toDomain() = ObjectDomain(
+    postId = postId,
+    id = id,
+    email = email,
+    name = name,
+    comment = comment
 )
