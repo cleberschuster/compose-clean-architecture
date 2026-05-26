@@ -4,7 +4,7 @@ import androidx.annotation.StringRes
 
 sealed interface MainUiEffect {
     data class ShowSnackbar(
-        @StringRes val resId: Int,
+        @param:StringRes val resId: Int,
         val args: Array<out Any> = emptyArray()
     ) : MainUiEffect {
         override fun equals(other: Any?): Boolean {

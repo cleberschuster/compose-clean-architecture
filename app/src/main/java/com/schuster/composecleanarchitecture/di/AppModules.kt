@@ -1,8 +1,6 @@
 package com.schuster.composecleanarchitecture.di
 
 import com.schuster.composecleanarchitecture.data.api.PostApiService
-import com.schuster.composecleanarchitecture.data.datasource.RemotePostDataSource
-import com.schuster.composecleanarchitecture.data.datasource.RemotePostDataSourceImpl
 import com.schuster.composecleanarchitecture.data.repository.PostRepositoryImpl
 import com.schuster.composecleanarchitecture.data.retrofit.RetrofitService
 import com.schuster.composecleanarchitecture.domain.repository.PostRepository
@@ -28,8 +26,7 @@ val presentationModules = module {
 }
 
 val dataModules = module {
-    factory<RemotePostDataSource> { RemotePostDataSourceImpl(api = get()) }
-    factory<PostRepository> { PostRepositoryImpl(remoteDataSource = get(), dispatcherIO = Dispatchers.IO) }
+    factory<PostRepository> { PostRepositoryImpl(api = get(), dispatcherIO = Dispatchers.IO) }
 }
 
 val networkModules = module {
