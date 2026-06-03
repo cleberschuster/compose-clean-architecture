@@ -3,9 +3,8 @@ package com.schuster.composecleanarchitecture.presentation.feature
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.schuster.composecleanarchitecture.R
-import com.schuster.composecleanarchitecture.domain.model.ObjectDomain
 import com.schuster.composecleanarchitecture.domain.usecase.GetPostUseCase
-import com.schuster.composecleanarchitecture.presentation.model.ObjectPresentation
+import com.schuster.composecleanarchitecture.presentation.mapper.toPresentation
 import com.schuster.composecleanarchitecture.utils.handleApiError
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -68,12 +67,4 @@ class MainViewModel(private val useCase: GetPostUseCase) : ViewModel() {
                 .collect()
         }
     }
-
-    private fun ObjectDomain.toPresentation() = ObjectPresentation(
-        postId = postId,
-        id = id,
-        name = name,
-        email = email,
-        comment = comment
-    )
 }
