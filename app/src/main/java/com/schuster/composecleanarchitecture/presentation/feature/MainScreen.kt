@@ -153,63 +153,63 @@ fun MainScreenUiState(uiStateValue: UiState, paddingValues: PaddingValues) {
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.Start
     ) {
-        when (uiStateValue.status) {
-            Status.SUCCESS -> {
+        when (val status = uiStateValue.status) {
+            is Status.Success -> {
                 Text(
                     modifier = Modifier
                         .padding(top = 8.dp, start = 16.dp, end = 16.dp, bottom = 8.dp)
                         .testTag(TestTags.COMMENT_TEXT),
-                    text = "COMENTARIO: ${uiStateValue.data?.comment}",
+                    text = "COMENTARIO: ${status.data.comment}",
                     style = TextStyle(fontSize = 16.sp)
                 )
 
                 Spacer(modifier = Modifier.padding(4.dp))
                 Text(
                     modifier = Modifier.padding(vertical = 8.dp, horizontal = 16.dp),
-                    text = "EMAIL: ${uiStateValue.data?.email}",
+                    text = "EMAIL: ${status.data.email}",
                     style = TextStyle(fontSize = 16.sp)
                 )
 
                 Spacer(modifier = Modifier.padding(4.dp))
                 Text(
                     modifier = Modifier.padding(vertical = 8.dp, horizontal = 16.dp),
-                    text = "NOME: ${uiStateValue.data?.name}",
+                    text = "NOME: ${status.data.name}",
                     style = TextStyle(fontSize = 16.sp)
                 )
 
                 Spacer(modifier = Modifier.padding(4.dp))
                 Text(
                     modifier = Modifier.padding(vertical = 8.dp, horizontal = 16.dp),
-                    text = "ID: ${uiStateValue.data?.id}",
+                    text = "ID: ${status.data.id}",
                     style = TextStyle(fontSize = 16.sp)
                 )
 
                 Spacer(modifier = Modifier.padding(4.dp))
                 Text(
                     modifier = Modifier.padding(vertical = 8.dp, horizontal = 16.dp),
-                    text = "POST ID: ${uiStateValue.data?.postId}",
+                    text = "POST ID: ${status.data.postId}",
                     style = TextStyle(fontSize = 16.sp)
                 )
             }
 
-            Status.ERROR -> {
+            is Status.Error -> {
                 ErrorScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(top = 48.dp),
-                    uiStateError = uiStateValue.errorMessage.toString()
+                    uiStateError = status.message
                 )
             }
 
-            Status.LOADING -> ShimmerScreen()
+            Status.Loading -> ShimmerScreen()
 
-            Status.INPUT_TEXT_ERROR -> ErrorScreenInputSearch(
+            Status.InputTextError -> ErrorScreenInputSearch(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 48.dp)
             )
 
-            Status.IDLE -> {}
+            Status.Idle -> {}
         }
     }
 }
