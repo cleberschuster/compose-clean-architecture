@@ -59,12 +59,14 @@ fun SearchTopBar(
                 .fillMaxWidth(),
             value = currentSearchText,
             colors = TextFieldDefaults.colors(
-                focusedContainerColor = Color.Gray,
-                unfocusedContainerColor = Color.Gray,
+                focusedContainerColor = Color(0xFFF1F3F4), // Fundo claro para contraste sobre a TopBar roxo-cinza
+                unfocusedContainerColor = Color(0xFFF1F3F4),
                 focusedIndicatorColor = Color.Transparent,
                 disabledIndicatorColor = Color.Transparent,
                 unfocusedIndicatorColor = Color.Transparent,
-                cursorColor = Color.Gray
+                cursorColor = Color(0xFF202124),
+                focusedTextColor = Color(0xFF202124), // Texto digitado escuro para máxima legibilidade
+                unfocusedTextColor = Color(0xFF202124)
             ),
             onValueChange = {
                 onSearchTextChanged(it)
@@ -72,12 +74,12 @@ fun SearchTopBar(
             placeholder = {
                 Text(
                     text = stringResource(id = R.string.search_list_main_search),
-                    color = Color.Gray
+                    color = Color(0xFF5F6368) // Placeholder cinza escuro
                 )
             },
             textStyle = TextStyle(
                 fontSize = MaterialTheme.typography.bodyMedium.fontSize,
-                color = Color.Gray
+                color = Color(0xFF202124)
             ),
             singleLine = true,
             maxLines = 1,
@@ -122,7 +124,7 @@ fun SearchIcon() {
     DefaultIcon(
         searchIcon = Icons.Filled.Search,
         contentDescription = stringResource(id = R.string.icon_search),
-        iconColor = Color.Gray
+        iconColor = Color(0xFF5F6368) // Ícone de busca cinza escuro para melhor contraste
     )
 }
 
@@ -132,7 +134,7 @@ fun CloseButton(action: () -> Unit = {}) {
         searchIcon = Icons.Default.Close,
         contentDescription = stringResource(id = R.string.icon_close),
         onIconClickAction = action,
-        iconColor = Color.Gray
+        iconColor = Color(0xFF5F6368) // Ícone de fechar cinza escuro para melhor contraste
     )
 }
 
@@ -157,4 +159,5 @@ fun SearchTopBarPreview() {
         onCleanTextPressed = {},
     )
 }
+
 
