@@ -8,11 +8,18 @@ import java.util.concurrent.TimeUnit
 
 private const val BASE_URL = "https://jsonplaceholder.typicode.com/"
 
+/**
+ * [SOLID: S - Single Responsibility Principle (Princípio da Responsabilidade Única)]
+ * Este objeto tem a responsabilidade exclusiva de configurar e instanciar o cliente HTTP (OkHttpClient)
+ * e o cliente REST (Retrofit). Ele expõe um único método de fábrica genérico [create] para instanciar
+ * os serviços de API definidos no projeto.
+ */
 object RetrofitService {
 
     private fun criarHttpClient(): OkHttpClient {
-        val httpLoggingInterceptor = HttpLoggingInterceptor()
-        httpLoggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
+        val httpLoggingInterceptor = HttpLoggingInterceptor().apply {
+            level = HttpLoggingInterceptor.Level.BODY
+        }
 
         return OkHttpClient.Builder()
             .addInterceptor(httpLoggingInterceptor)
@@ -42,5 +49,4 @@ object RetrofitService {
         .build()
 
     inline fun <reified T> create(): T = service.create(T::class.java)
-
 }

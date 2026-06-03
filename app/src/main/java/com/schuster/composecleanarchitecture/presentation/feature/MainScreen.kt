@@ -41,37 +41,33 @@ import com.schuster.composecleanarchitecture.presentation.ui.theme.PurpleGrey40
 import com.schuster.composecleanarchitecture.utils.TestTags
 import org.koin.androidx.compose.koinViewModel
 
-
+/**
+ * [SOLID: S - Single Responsibility Principle (Princípio da Responsabilidade Única)]
+ * A responsabilidade da UI é estritamente declarar e estruturar os componentes visuais, 
+ * renderizando dados provenientes de um fluxo de dados e delegando as interações para funções
+ * externas. Não há lógica de negócio nem gerenciamento de rede direto na tela.
+ *
+ * [SOLID: I - Interface Segregation Principle (Princípio da Segregação de Interfaces)]
+ * [MainScreenContent] é um componente altamente segregado. Ele não recebe a instância do
+ * ViewModel completo. Em vez disso, depende de interfaces simples e estruturas mínimas
+ * de dados (o [UiState] e a lambda [onEvent]). Isso permite que o componente seja reutilizável, 
+ * fácil de testar isoladamente e independente de viewModels específicos.
+ *
+ * [SOLID: D - Dependency Inversion Principle (Princípio da Inversão de Dependência)]
+ * O [MainScreenContent] não depende diretamente de classes concretas de lógica de dados. 
+ * As dependências de efeitos e intenções são passadas via injeção de parâmetros (Callbacks e Estados) 
+ * a partir de componentes superiores.
+ */
 @Composable
 fun MainScreen(
     viewModel: MainViewModel = koinViewModel(),
     snackbarHostState: SnackbarHostState = remember { SnackbarHostState() }
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-
-    MainScreenContent(
-        viewModel = viewModel,
-        uiStateValue = uiState,
-        snackbarHostState = snackbarHostState,
-        onEvent = viewModel::onEvent
-    )
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun MainScreenContent(
-    viewModel: MainViewModel,
-    uiStateValue: UiState,
-    snackbarHostState: SnackbarHostState,
-    onEvent: (MainScreenEvent) -> Unit
-) {
-
     val context = LocalContext.current
-    val keyboardController = LocalSoftwareKeyboardController.current
-    val lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current
 
-    // official docomentation:
-    // https://developer.android.com/develop/ui/compose/side-effects?hl=pt-br#launchedeffect
+    // Coleta os efeitos colaterais unidirecionais no nível superior, 
+    // mantendo o conteúdo da tela stateless
     LaunchedEffect(Unit) {
         viewModel.uiEffect.collect { uiEffect ->
             when (uiEffect) {
@@ -84,26 +80,33 @@ fun MainScreenContent(
         }
     }
 
-    // official docomentation:
-    // https://developer.android.com/develop/ui/compose/side-effects?hl=pt-br#disposableeffect
-    // If `lifecycleOwner` changes, dispose and reset the effect
+    MainScreenContent(
+        uiStateValue = uiState,
+        snackbarHostState = snackbarHostState,
+        onEvent = viewModel::onEvent
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun MainScreenContent(
+    uiStateValue: UiState,
+    snackbarHostState: SnackbarHostState,
+    onEvent: (MainScreenEvent) -> Unit
+) {
+    val keyboardController = LocalSoftwareKeyboardController.current
+    val lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current
+
     DisposableEffect(lifecycleOwner) {
-        // Create an observer that triggers our remembered callbacks
         val lifecycleObserver = LifecycleEventObserver { _, event ->
-
             when (event) {
-
                 Lifecycle.Event.ON_START -> {
                     onEvent(MainScreenEvent.OnSearch)
                 }
                 else -> {}
             }
         }
-
-        // Add the observer to the lifecycle
         lifecycleOwner.lifecycle.addObserver(lifecycleObserver)
-
-        // When the effect leaves the Composition, remove the observer
         onDispose {
             lifecycleOwner.lifecycle.removeObserver(lifecycleObserver)
         }
@@ -111,32 +114,30 @@ fun MainScreenContent(
 
     Scaffold(
         topBar = {
-            TopAppBar( {
-                SearchTopBar(
-                    currentSearchText = uiStateValue.textSearch,
-                    onSearchTextChanged = {
-                        onEvent(MainScreenEvent.OnValueChange(it))
-                    },
-                    onSearchDispatched = {
-                        keyboardController?.hide()
-                        onEvent(MainScreenEvent.OnClickSearch)
-                    },
-                    onCleanTextPressed = {
-                        onEvent(MainScreenEvent.OnValueChange(""))
-                    },
-                )
-            },
+            TopAppBar(
+                title = {
+                    SearchTopBar(
+                        currentSearchText = uiStateValue.textSearch,
+                        onSearchTextChanged = {
+                            onEvent(MainScreenEvent.OnValueChange(it))
+                        },
+                        onSearchDispatched = {
+                            keyboardController?.hide()
+                            onEvent(MainScreenEvent.OnClickSearch)
+                        },
+                        onCleanTextPressed = {
+                            onEvent(MainScreenEvent.OnValueChange(""))
+                        },
+                    )
+                },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = PurpleGrey40
                 )
             )
-
         },
-
         snackbarHost = {
-            SnackbarHost(hostState = snackbarHostState )
+            SnackbarHost(hostState = snackbarHostState)
         }
-
     ) { paddingValues ->
         MainScreenUiState(uiStateValue, paddingValues)
     }
@@ -144,7 +145,6 @@ fun MainScreenContent(
 
 @Composable
 fun MainScreenUiState(uiStateValue: UiState, paddingValues: PaddingValues) {
-
     Column(
         modifier = Modifier
             .padding(paddingValues)
@@ -154,7 +154,6 @@ fun MainScreenUiState(uiStateValue: UiState, paddingValues: PaddingValues) {
         horizontalAlignment = Alignment.Start
     ) {
         when (uiStateValue.status) {
-
             Status.SUCCESS -> {
                 Text(
                     modifier = Modifier
@@ -195,15 +194,18 @@ fun MainScreenUiState(uiStateValue: UiState, paddingValues: PaddingValues) {
 
             Status.ERROR -> {
                 ErrorScreen(
-                    Modifier.fillMaxWidth()
+                    modifier = Modifier
+                        .fillMaxWidth()
                         .padding(top = 48.dp),
-                    uiStateError = uiStateValue.errorMessage.toString())
+                    uiStateError = uiStateValue.errorMessage.toString()
+                )
             }
 
             Status.LOADING -> ShimmerScreen()
 
-            Status.INPUT_TEXT_ERROR-> ErrorScreenInputSearch(
-                Modifier.fillMaxWidth()
+            Status.INPUT_TEXT_ERROR -> ErrorScreenInputSearch(
+                modifier = Modifier
+                    .fillMaxWidth()
                     .padding(top = 48.dp)
             )
 

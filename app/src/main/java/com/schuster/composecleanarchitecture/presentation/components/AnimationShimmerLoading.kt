@@ -13,6 +13,16 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 
+/**
+ * [SOLID: S - Single Responsibility Principle (Princípio da Responsabilidade Única)]
+ * A responsabilidade deste modificador é puramente computar e aplicar um efeito de animação shimmer
+ * sobre o background de um componente Compose. A classe de suporte [ShimmerAnimationData] cuida apenas
+ * da paleta de cores.
+ *
+ * [SOLID: O - Open/Closed Principle (Princípio do Aberto/Fechado)]
+ * Este modificador é projetado para ser reutilizável e estensível. Qualquer componente visual 
+ * (Box, Row, Column, etc.) pode usá-lo sem que a animação precise ser reescrita para cada um deles.
+ */
 fun Modifier.shimmerLoadingAnimation(
     isLoadingCompleted: Boolean = true,
     isLightModeActive: Boolean = true,

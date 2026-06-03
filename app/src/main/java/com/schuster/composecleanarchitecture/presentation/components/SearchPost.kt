@@ -1,6 +1,5 @@
 package com.schuster.composecleanarchitecture.presentation.components
 
-
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -31,6 +30,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.schuster.composecleanarchitecture.R
 
+/**
+ * [SOLID: S - Single Responsibility Principle (Princípio da Responsabilidade Única)]
+ * A responsabilidade exclusiva deste componente visual é renderizar e gerenciar o campo de texto
+ * de pesquisa na TopBar. Ele não toma decisões de busca, delegando-as através de callbacks.
+ *
+ * [SOLID: I - Interface Segregation Principle (Princípio da Segregação de Interfaces)]
+ * Este componente define parâmetros e callbacks específicos ([currentSearchText], [onSearchTextChanged], etc.) 
+ * em vez de depender de uma interface ampla ou do ViewModel diretamente. Isso isola o componente de dependências extras.
+ */
 @Composable
 fun SearchTopBar(
     modifier: Modifier = Modifier,
@@ -41,13 +49,18 @@ fun SearchTopBar(
     onCleanTextPressed: () -> Unit,
 ) {
     Box(
-        modifier = modifier.height(56.dp).padding(end = 16.dp)
+        modifier = modifier
+            .height(56.dp)
+            .padding(end = 16.dp)
     ) {
         TextField(
-            modifier = Modifier.clip(CircleShape.copy(all = CornerSize(10.dp))).fillMaxWidth(),
+            modifier = Modifier
+                .clip(CircleShape.copy(all = CornerSize(10.dp)))
+                .fillMaxWidth(),
             value = currentSearchText,
             colors = TextFieldDefaults.colors(
-                Color.Gray,
+                focusedContainerColor = Color.Gray,
+                unfocusedContainerColor = Color.Gray,
                 focusedIndicatorColor = Color.Transparent,
                 disabledIndicatorColor = Color.Transparent,
                 unfocusedIndicatorColor = Color.Transparent,
@@ -72,9 +85,8 @@ fun SearchTopBar(
                 SearchIcon()
             },
             trailingIcon = {
-                when (currentSearchText.isEmpty()) {
-                    false -> CloseButton(action = onCleanTextPressed)
-                    true -> {}
+                if (currentSearchText.isNotEmpty()) {
+                    CloseButton(action = onCleanTextPressed)
                 }
             },
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search, keyboardType = keyboardType),
@@ -145,3 +157,4 @@ fun SearchTopBarPreview() {
         onCleanTextPressed = {},
     )
 }
+

@@ -3,9 +3,8 @@ package com.schuster.composecleanarchitecture.presentation.feature
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.schuster.composecleanarchitecture.R
-import com.schuster.composecleanarchitecture.domain.model.ObjectDomain
 import com.schuster.composecleanarchitecture.domain.usecase.GetPostUseCase
-import com.schuster.composecleanarchitecture.presentation.model.ObjectPresentation
+import com.schuster.composecleanarchitecture.presentation.mapper.toPresentation
 import com.schuster.composecleanarchitecture.utils.handleApiError
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,6 +16,24 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
+/**
+ * [SOLID: S - Single Responsibility Principle (Princípio da Responsabilidade Única)]
+ * Este ViewModel tem como responsabilidade exclusiva receber as interações/ações do usuário
+ * (representados por [MainScreenEvent]), acionar a lógica de negócios na camada de domínio 
+ * através de [GetPostUseCase], e atualizar de forma unidirecional o estado de exibição [UiState] 
+ * e os efeitos colaterais instantâneos [MainUiEffect].
+ * A responsabilidade de mapeamento de dados foi extraída para o arquivo separado [PostMapper.kt].
+ *
+ * [SOLID: O - Open/Closed Principle (Princípio do Aberto/Fechado)]
+ * O ViewModel é aberto para receber novos tipos de eventos através da estrutura [onEvent], bastando
+ * adicionar novas ramificações no 'when' quando novas ações do usuário forem adicionadas na interface
+ * selada [MainScreenEvent], sem comprometer ou modificar as lógicas existentes de fluxo.
+ *
+ * [SOLID: D - Dependency Inversion Principle (Princípio da Inversão de Dependência)]
+ * O ViewModel depende exclusivamente da abstração [GetPostUseCase] (interface do domínio) em vez da
+ * implementação concreta [GetPostUseCaseImpl]. Além disso, a injeção da dependência é feita através
+ * do construtor da classe via Koin.
+ */
 class MainViewModel(private val useCase: GetPostUseCase) : ViewModel() {
 
     private val _uiState = MutableStateFlow(UiState())
@@ -71,14 +88,4 @@ class MainViewModel(private val useCase: GetPostUseCase) : ViewModel() {
                 .collect()
         }
     }
-
-
-    // Mapeamento DOMAIN -> PRESENTATION: Encapsulado dentro do MainViewModel.kt via função de extensão .toPresentation().
-    private fun ObjectDomain.toPresentation() = ObjectPresentation(
-        postId = postId,
-        id = id,
-        name = name,
-        email = email,
-        comment = comment
-    )
-}
+}
