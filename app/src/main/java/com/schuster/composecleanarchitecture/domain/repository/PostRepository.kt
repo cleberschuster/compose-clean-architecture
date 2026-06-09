@@ -1,7 +1,6 @@
 package com.schuster.composecleanarchitecture.domain.repository
 
 import com.schuster.composecleanarchitecture.domain.model.ObjectDomain
-import kotlinx.coroutines.flow.Flow
 
 /**
  * [SOLID: D - Dependency Inversion Principle (Princípio da Inversão de Dependência)]
@@ -15,5 +14,5 @@ import kotlinx.coroutines.flow.Flow
  * separadas em vez de inflar uma única interface de repositório monolítica.
  */
 interface PostRepository {
-    suspend fun getPost(id: Int): Flow<ObjectDomain>
-}
+    suspend fun getPost(id: Int): ObjectDomain
+}

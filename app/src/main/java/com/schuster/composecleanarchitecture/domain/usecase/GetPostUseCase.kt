@@ -1,7 +1,6 @@
 package com.schuster.composecleanarchitecture.domain.usecase
 
 import com.schuster.composecleanarchitecture.domain.model.ObjectDomain
-import kotlinx.coroutines.flow.Flow
 
 /**
  * [SOLID: I - Interface Segregation Principle (Princípio da Segregação de Interfaces)]
@@ -15,5 +14,5 @@ import kotlinx.coroutines.flow.Flow
  * [GetPostUseCaseImpl]. Isso facilita testes de unidade através de mocks e evita acoplamento forte.
  */
 interface GetPostUseCase {
-    suspend operator fun invoke(id: Int): Flow<ObjectDomain>
+    suspend operator fun invoke(id: Int): ObjectDomain?
 }

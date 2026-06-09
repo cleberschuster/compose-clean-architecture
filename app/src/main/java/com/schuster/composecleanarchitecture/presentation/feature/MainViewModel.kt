@@ -9,9 +9,6 @@ import com.schuster.composecleanarchitecture.utils.handleApiError
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -49,22 +46,29 @@ class MainViewModel(private val useCase: GetPostUseCase) : ViewModel() {
 
             _uiState.update { it.copy(status = Status.Loading) }
 
-            useCase.invoke(id.toInt())
-                .onEach { domainResult ->
+            try {
+                val domainResult = useCase(id.toInt())
+                
+                if (domainResult != null) {
                     _uiState.update { currentState ->
                         currentState.copy(
                             status = Status.Success(data = domainResult.toPresentation())
                         )
                     }
-                }
-                .catch { error ->
+                } else {
                     _uiState.update { currentState ->
                         currentState.copy(
-                            status = Status.Error(message = handleApiError(error).toString())
+                            status = Status.Error(message = "Post não encontrado ou ID inválido")
                         )
                     }
                 }
-                .collect()
+            } catch (error: Exception) {
+                _uiState.update { currentState ->
+                    currentState.copy(
+                        status = Status.Error(message = handleApiError(error).toString())
+                    )
+                }
+            }
         }
     }
 }

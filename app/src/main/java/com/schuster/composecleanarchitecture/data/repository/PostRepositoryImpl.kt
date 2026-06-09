@@ -5,9 +5,7 @@ import com.schuster.composecleanarchitecture.data.model.toDomain
 import com.schuster.composecleanarchitecture.domain.model.ObjectDomain
 import com.schuster.composecleanarchitecture.domain.repository.PostRepository
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.withContext
 
 /**
  * [SOLID: S - Single Responsibility Principle (Princípio da Responsabilidade Única)]
@@ -29,10 +27,10 @@ class PostRepositoryImpl(
     private val dispatcherIO: CoroutineDispatcher
 ) : PostRepository {
 
-    override suspend fun getPost(id: Int): Flow<ObjectDomain> = flow {
+    override suspend fun getPost(id: Int): ObjectDomain = withContext(dispatcherIO) {
         val response = api.getPost(id)
-        emit(response.toDomain())
-    }.flowOn(dispatcherIO)
+        response.toDomain()
+    }
 }
 
 
