@@ -1,5 +1,6 @@
 package com.schuster.composecleanarchitecture.domain.usecase
 
+import com.schuster.composecleanarchitecture.domain.model.DomainResult
 import com.schuster.composecleanarchitecture.domain.model.ObjectDomain
 
 /**
@@ -14,5 +15,5 @@ import com.schuster.composecleanarchitecture.domain.model.ObjectDomain
  * [GetPostUseCaseImpl]. Isso facilita testes de unidade através de mocks e evita acoplamento forte.
  */
 interface GetPostUseCase {
-    suspend operator fun invoke(id: Int): ObjectDomain?
+    suspend operator fun invoke(id: Int): DomainResult<ObjectDomain>
 }

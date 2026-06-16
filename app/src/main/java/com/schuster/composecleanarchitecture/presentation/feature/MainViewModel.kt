@@ -3,9 +3,9 @@ package com.schuster.composecleanarchitecture.presentation.feature
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.schuster.composecleanarchitecture.R
+import com.schuster.composecleanarchitecture.domain.model.DomainResult
 import com.schuster.composecleanarchitecture.domain.usecase.GetPostUseCase
 import com.schuster.composecleanarchitecture.presentation.mapper.toPresentation
-import com.schuster.composecleanarchitecture.utils.handleApiError
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -56,27 +56,22 @@ class MainViewModel(private val useCase: GetPostUseCase) : ViewModel() {
 
             _uiState.update { it.copy(status = MainStatus.Loading) }
 
-            try {
-                val domainResult = useCase(id.toInt())
-                
-                if (domainResult != null) {
+            // O ViewModel agora apenas reage ao resultado do UseCase, 
+            // sem precisar de blocos try/catch para erros técnicos.
+            when (val domainResult = useCase(id.toInt())) {
+                is DomainResult.Success -> {
                     _uiState.update { currentState ->
                         currentState.copy(
-                            status = MainStatus.Success(data = domainResult.toPresentation())
-                        )
-                    }
-                } else {
-                    _uiState.update { currentState ->
-                        currentState.copy(
-                            status = MainStatus.Error(message = "Post não encontrado ou ID inválido")
+                            status = MainStatus.Success(data = domainResult.data.toPresentation())
                         )
                     }
                 }
-            } catch (error: Exception) {
-                _uiState.update { currentState ->
-                    currentState.copy(
-                        status = MainStatus.Error(message = handleApiError(error).toString())
-                    )
+                is DomainResult.Error -> {
+                    _uiState.update { currentState ->
+                        currentState.copy(
+                            status = MainStatus.Error(message = domainResult.message)
+                        )
+                    }
                 }
             }
         }

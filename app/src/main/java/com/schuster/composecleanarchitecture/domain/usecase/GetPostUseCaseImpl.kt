@@ -1,5 +1,6 @@
 package com.schuster.composecleanarchitecture.domain.usecase
 
+import com.schuster.composecleanarchitecture.domain.model.DomainResult
 import com.schuster.composecleanarchitecture.domain.model.ObjectDomain
 import com.schuster.composecleanarchitecture.domain.repository.PostRepository
 
@@ -13,9 +14,7 @@ import com.schuster.composecleanarchitecture.domain.repository.PostRepository
  * sem tocar no código das telas (Presentation) que o utilizam.
  *
  * [SOLID: L - Liskov Substitution Principle (Princípio da Substituição de Liskov)]
- * Esta implementação estende [GetPostUseCase] de forma previsível e segura. Evitamos usar '!!'
- * (force unwrap) que poderia causar crashes de NullPointerException inesperados, respeitando
- * os contratos de tipos definidos e garantindo a estabilidade da substituição.
+ * Esta implementação estende [GetPostUseCase] de forma previsível e segura.
  *
  * [SOLID: D - Dependency Inversion Principle (Princípio da Inversão de Dependência)]
  * O UseCase não depende diretamente da implementação concreta do repositório (PostRepositoryImpl)
@@ -25,8 +24,17 @@ class GetPostUseCaseImpl(
     private val repository: PostRepository
 ) : GetPostUseCase {
 
-    override suspend operator fun invoke(id: Int): ObjectDomain? {
-        val post = repository.getPost(id)
-        return if (post.id != null && post.id < 1000) post else null
+    override suspend operator fun invoke(id: Int): DomainResult<ObjectDomain> {
+        return when (val result = repository.getPost(id)) {
+            is DomainResult.Success -> {
+                val post = result.data
+                if (post.id != null && post.id < 1000) {
+                    DomainResult.Success(post)
+                } else {
+                    DomainResult.Error("Post não encontrado ou ID inválido (Regra de Negócio)")
+                }
+            }
+            is DomainResult.Error -> result
+        }
     }
 }
