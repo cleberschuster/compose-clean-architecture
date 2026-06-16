@@ -40,7 +40,6 @@ class MainViewModel(private val useCase: GetPostUseCase) : ViewModel() {
         when (intent) {
             is MainIntent.OnValueChange -> handleValueChange(intent.searchText)
             is MainIntent.OnSearch -> getNewPost(_uiState.value.textSearch)
-            is MainIntent.OnClickSearch -> getNewPost(_uiState.value.textSearch)
         }
     }
 
@@ -59,8 +58,6 @@ class MainViewModel(private val useCase: GetPostUseCase) : ViewModel() {
 
             _uiState.update { it.copy(status = MainStatus.Loading) }
 
-            // O ViewModel agora apenas reage ao resultado do UseCase, 
-            // sem precisar de blocos try/catch para erros técnicos.
             when (val domainResult = useCase(id.toInt())) {
                 is DomainResult.Success -> {
                     _uiState.update { currentState ->

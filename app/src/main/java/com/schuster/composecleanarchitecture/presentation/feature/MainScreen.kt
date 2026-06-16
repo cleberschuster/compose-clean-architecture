@@ -109,7 +109,7 @@ fun MainScreenContent(
                         },
                         onSearchDispatched = {
                             keyboardController?.hide()
-                            onIntent(MainIntent.OnClickSearch)
+                            onIntent(MainIntent.OnSearch)
                         },
                         onCleanTextPressed = {
                             onIntent(MainIntent.OnValueChange(""))
