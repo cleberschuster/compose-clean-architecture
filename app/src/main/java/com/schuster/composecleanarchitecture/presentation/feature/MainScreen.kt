@@ -42,21 +42,9 @@ import com.schuster.composecleanarchitecture.utils.TestTags
 import org.koin.androidx.compose.koinViewModel
 
 /**
- * [SOLID: S - Single Responsibility Principle (Princípio da Responsabilidade Única)]
- * A responsabilidade da UI é estritamente declarar e estruturar os componentes visuais, 
- * renderizando dados provenientes de um fluxo de dados e delegando as interações para funções
- * externas. Não há lógica de negócio nem gerenciamento de rede direto na tela.
- *
- * [SOLID: I - Interface Segregation Principle (Princípio da Segregação de Interfaces)]
- * [MainScreenContent] é um componente altamente segregado. Ele não recebe a instância do
- * ViewModel completo. Em vez disso, depende de interfaces simples e estruturas mínimas
- * de dados (o [UiState] e a lambda [onEvent]). Isso permite que o componente seja reutilizável, 
- * fácil de testar isoladamente e independente de viewModels específicos.
- *
- * [SOLID: D - Dependency Inversion Principle (Princípio da Inversão de Dependência)]
- * O [MainScreenContent] não depende diretamente de classes concretas de lógica de dados. 
- * As dependências de efeitos e intenções são passadas via injeção de parâmetros (Callbacks e Estados) 
- * a partir de componentes superiores.
+ * [MVI: View]
+ * A UI é uma função puramente baseada no estado. Ela observa o estado do ViewModel
+ * e emite intenções (Intents) em resposta às interações do usuário.
  */
 @Composable
 fun MainScreen(
@@ -66,8 +54,6 @@ fun MainScreen(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val context = LocalContext.current
 
-    // Coleta os efeitos colaterais unidirecionais no nível superior, 
-    // mantendo o conteúdo da tela stateless
     LaunchedEffect(Unit) {
         viewModel.uiEffect.collect { uiEffect ->
             when (uiEffect) {
@@ -83,7 +69,7 @@ fun MainScreen(
     MainScreenContent(
         uiStateValue = uiState,
         snackbarHostState = snackbarHostState,
-        onEvent = viewModel::onEvent
+        onIntent = viewModel::processIntent
     )
 }
 
@@ -92,7 +78,7 @@ fun MainScreen(
 fun MainScreenContent(
     uiStateValue: UiState,
     snackbarHostState: SnackbarHostState,
-    onEvent: (MainScreenEvent) -> Unit
+    onIntent: (MainIntent) -> Unit
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
     val lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current
@@ -101,7 +87,7 @@ fun MainScreenContent(
         val lifecycleObserver = LifecycleEventObserver { _, event ->
             when (event) {
                 Lifecycle.Event.ON_START -> {
-                    onEvent(MainScreenEvent.OnSearch)
+                    onIntent(MainIntent.OnSearch)
                 }
                 else -> {}
             }
@@ -119,14 +105,14 @@ fun MainScreenContent(
                     SearchTopBar(
                         currentSearchText = uiStateValue.textSearch,
                         onSearchTextChanged = {
-                            onEvent(MainScreenEvent.OnValueChange(it))
+                            onIntent(MainIntent.OnValueChange(it))
                         },
                         onSearchDispatched = {
                             keyboardController?.hide()
-                            onEvent(MainScreenEvent.OnClickSearch)
+                            onIntent(MainIntent.OnClickSearch)
                         },
                         onCleanTextPressed = {
-                            onEvent(MainScreenEvent.OnValueChange(""))
+                            onIntent(MainIntent.OnValueChange(""))
                         },
                     )
                 },
@@ -154,7 +140,7 @@ fun MainScreenUiState(uiStateValue: UiState, paddingValues: PaddingValues) {
         horizontalAlignment = Alignment.Start
     ) {
         when (val status = uiStateValue.status) {
-            is Status.Success -> {
+            is MainStatus.Success -> {
                 Text(
                     modifier = Modifier
                         .padding(top = 8.dp, start = 16.dp, end = 16.dp, bottom = 8.dp)
@@ -192,7 +178,7 @@ fun MainScreenUiState(uiStateValue: UiState, paddingValues: PaddingValues) {
                 )
             }
 
-            is Status.Error -> {
+            is MainStatus.Error -> {
                 ErrorScreen(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -201,15 +187,15 @@ fun MainScreenUiState(uiStateValue: UiState, paddingValues: PaddingValues) {
                 )
             }
 
-            Status.Loading -> ShimmerScreen()
+            MainStatus.Loading -> ShimmerScreen()
 
-            Status.InputTextError -> ErrorScreenInputSearch(
+            MainStatus.InputTextError -> ErrorScreenInputSearch(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 48.dp)
             )
 
-            Status.Idle -> {}
+            MainStatus.Idle -> {}
         }
     }
 }

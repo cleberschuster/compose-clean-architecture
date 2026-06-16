@@ -13,6 +13,14 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
+/**
+ * [MVI: Model]
+ * O ViewModel atua como o mediador que recebe Intenções (Intents), processa-as e 
+ * emite novos Estados (States) ou Efeitos (Effects).
+ *
+ * [SOLID: S - Single Responsibility Principle]
+ * Coordena o fluxo de dados entre o domínio (Use Cases) e a apresentação.
+ */
 class MainViewModel(private val useCase: GetPostUseCase) : ViewModel() {
 
     private val _uiState = MutableStateFlow(UiState())
@@ -21,30 +29,32 @@ class MainViewModel(private val useCase: GetPostUseCase) : ViewModel() {
     private val _uiEffect = Channel<MainUiEffect>()
     val uiEffect = _uiEffect.receiveAsFlow()
 
-    fun onEvent(event: MainScreenEvent) {
-        when (event) {
-            is MainScreenEvent.OnValueChange -> {
-                val onlyNumbers = event.searchText.filter { it.isDigit() }
-                _uiState.update { it.copy(textSearch = onlyNumbers) }
-            }
-            is MainScreenEvent.OnSearch -> {
-                getNewPost(_uiState.value.textSearch)
-            }
-            is MainScreenEvent.OnClickSearch -> {
-                getNewPost(_uiState.value.textSearch)
-            }
+    /**
+     * Ponto único de entrada para todas as interações do usuário.
+     * Garante o fluxo unidirecional de dados.
+     */
+    fun processIntent(intent: MainIntent) {
+        when (intent) {
+            is MainIntent.OnValueChange -> handleValueChange(intent.searchText)
+            is MainIntent.OnSearch -> getNewPost(_uiState.value.textSearch)
+            is MainIntent.OnClickSearch -> getNewPost(_uiState.value.textSearch)
         }
+    }
+
+    private fun handleValueChange(searchText: String) {
+        val onlyNumbers = searchText.filter { it.isDigit() }
+        _uiState.update { it.copy(textSearch = onlyNumbers) }
     }
 
     private fun getNewPost(id: String) {
         viewModelScope.launch {
             if (id.isBlank()) {
                 _uiEffect.send(MainUiEffect.ShowSnackbar(resId = R.string.search_not_empty))
-                _uiState.update { it.copy(status = Status.InputTextError) }
+                _uiState.update { it.copy(status = MainStatus.InputTextError) }
                 return@launch
             }
 
-            _uiState.update { it.copy(status = Status.Loading) }
+            _uiState.update { it.copy(status = MainStatus.Loading) }
 
             try {
                 val domainResult = useCase(id.toInt())
@@ -52,20 +62,20 @@ class MainViewModel(private val useCase: GetPostUseCase) : ViewModel() {
                 if (domainResult != null) {
                     _uiState.update { currentState ->
                         currentState.copy(
-                            status = Status.Success(data = domainResult.toPresentation())
+                            status = MainStatus.Success(data = domainResult.toPresentation())
                         )
                     }
                 } else {
                     _uiState.update { currentState ->
                         currentState.copy(
-                            status = Status.Error(message = "Post não encontrado ou ID inválido")
+                            status = MainStatus.Error(message = "Post não encontrado ou ID inválido")
                         )
                     }
                 }
             } catch (error: Exception) {
                 _uiState.update { currentState ->
                     currentState.copy(
-                        status = Status.Error(message = handleApiError(error).toString())
+                        status = MainStatus.Error(message = handleApiError(error).toString())
                     )
                 }
             }
