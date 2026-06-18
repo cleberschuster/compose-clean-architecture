@@ -81,22 +81,22 @@ fun MainScreenContent(
     onIntent: (MainIntent) -> Unit
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
-    val lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current
+//    val lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current
 
-    DisposableEffect(lifecycleOwner) {
-        val lifecycleObserver = LifecycleEventObserver { _, event ->
-            when (event) {
-                Lifecycle.Event.ON_START -> {
-                    onIntent(MainIntent.OnSearch)
-                }
-                else -> {}
-            }
-        }
-        lifecycleOwner.lifecycle.addObserver(lifecycleObserver)
-        onDispose {
-            lifecycleOwner.lifecycle.removeObserver(lifecycleObserver)
-        }
-    }
+//    DisposableEffect(lifecycleOwner) {
+//        val lifecycleObserver = LifecycleEventObserver { _, event ->
+//            when (event) {
+//                Lifecycle.Event.ON_START -> {
+//                    onIntent(MainIntent.OnSearch)
+//                }
+//                else -> {}
+//            }
+//        }
+//        lifecycleOwner.lifecycle.addObserver(lifecycleObserver)
+//        onDispose {
+//            lifecycleOwner.lifecycle.removeObserver(lifecycleObserver)
+//        }
+//    }
 
     Scaffold(
         topBar = {

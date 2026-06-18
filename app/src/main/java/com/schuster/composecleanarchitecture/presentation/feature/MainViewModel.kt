@@ -26,11 +26,12 @@ class MainViewModel(private val useCase: GetPostUseCase) : ViewModel() {
     private val _uiState = MutableStateFlow(UiState())
     val uiState = _uiState.asStateFlow()
 
-    // O uso de Channel.BUFFERED garante que eventos únicos (como Snackbars e Navegação) 
-    // sejam entregues à UI mesmo que ela não esteja pronta no momento do disparo,
-    // evitando a perda de eventos durante mudanças de configuração ou inicialização.
-    private val _uiEffect = Channel<MainUiEffect>(Channel.BUFFERED)
+    private val _uiEffect = Channel<MainUiEffect>()
     val uiEffect = _uiEffect.receiveAsFlow()
+
+    init {
+        getNewPost("1")
+    }
 
     /**
      * Ponto único de entrada para todas as interações do usuário.
