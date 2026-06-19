@@ -15,14 +15,6 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-/**
- * [MVI: Model]
- * O ViewModel atua como o mediador que recebe Intenções (Intents), processa-as e 
- * emite novos Estados (States) ou Efeitos (Effects).
- *
- * [SOLID: S - Single Responsibility Principle]
- * Coordena o fluxo de dados entre o domínio (Use Cases) e a apresentação.
- */
 class MainViewModel(private val useCase: GetPostUseCase) : ViewModel() {
 
     private val _uiState = MutableStateFlow(UiState())
@@ -38,10 +30,6 @@ class MainViewModel(private val useCase: GetPostUseCase) : ViewModel() {
         processIntent(MainIntent.OnSearch)
     }
 
-    /**
-     * Ponto único de entrada para todas as interações do usuário.
-     * Garante o fluxo unidirecional de dados.
-     */
     fun processIntent(intent: MainIntent) {
         when (intent) {
             is MainIntent.OnValueChange -> handleValueChange(intent.searchText)

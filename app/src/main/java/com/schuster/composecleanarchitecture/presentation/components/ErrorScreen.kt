@@ -13,11 +13,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.schuster.composecleanarchitecture.R
 
-/**
- * [SOLID: S - Single Responsibility Principle (Princípio da Responsabilidade Única)]
- * A responsabilidade exclusiva deste arquivo/componentes é renderizar visualmente os estados de erro 
- * (erro de chamada à API e erro de input do campo de busca) para o usuário final de forma declarativa.
- */
 @Composable
 fun ErrorScreen(modifier: Modifier, uiStateError: String) {
     Column(
@@ -52,4 +47,4 @@ fun ErrorScreenInputSearch(modifier: Modifier) {
             modifier = Modifier.padding(16.dp)
         )
     }
-}
+}

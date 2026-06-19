@@ -30,15 +30,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.schuster.composecleanarchitecture.R
 
-/**
- * [SOLID: S - Single Responsibility Principle (Princípio da Responsabilidade Única)]
- * A responsabilidade exclusiva deste componente visual é renderizar e gerenciar o campo de texto
- * de pesquisa na TopBar. Ele não toma decisões de busca, delegando-as através de callbacks.
- *
- * [SOLID: I - Interface Segregation Principle (Princípio da Segregação de Interfaces)]
- * Este componente define parâmetros e callbacks específicos ([currentSearchText], [onSearchTextChanged], etc.) 
- * em vez de depender de uma interface ampla ou do ViewModel diretamente. Isso isola o componente de dependências extras.
- */
 @Composable
 fun SearchTopBar(
     modifier: Modifier = Modifier,

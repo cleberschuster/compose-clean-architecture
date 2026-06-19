@@ -41,11 +41,6 @@ import com.schuster.composecleanarchitecture.presentation.ui.theme.PurpleGrey40
 import com.schuster.composecleanarchitecture.utils.TestTags
 import org.koin.androidx.compose.koinViewModel
 
-/**
- * [MVI: View]
- * A UI é uma função puramente baseada no estado. Ela observa o estado do ViewModel
- * e emite intenções (Intents) em resposta às interações do usuário.
- */
 @Composable
 fun MainScreen(
     viewModel: MainViewModel = koinViewModel(),

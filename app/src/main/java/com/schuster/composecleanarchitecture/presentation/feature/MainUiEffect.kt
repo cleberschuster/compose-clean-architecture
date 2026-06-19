@@ -3,14 +3,6 @@ package com.schuster.composecleanarchitecture.presentation.feature
 import android.content.Context
 import androidx.annotation.StringRes
 
-/**
- * [MVI: Side-Effect]
- * Representa eventos de disparo único que não alteram o estado persistente da UI,
- * como exibição de Snackbars, Toasts ou Navegação.
- *
- * [SOLID: S - Single Responsibility Principle]
- * Isola ações transientes do estado [UiState].
- */
 sealed interface MainUiEffect {
     class ShowSnackbar(
         @param:StringRes val resId: Int,
