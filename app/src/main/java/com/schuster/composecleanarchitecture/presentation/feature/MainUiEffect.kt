@@ -1,6 +1,6 @@
 package com.schuster.composecleanarchitecture.presentation.feature
 
-import androidx.annotation.StringRes
+import com.schuster.composecleanarchitecture.utils.UiText
 
 /**
  * [MVI: Side-Effect]
@@ -13,8 +13,5 @@ import androidx.annotation.StringRes
  * A conversão para String (que requer Context) é responsabilidade exclusiva da View (MainScreen).
  */
 sealed interface MainUiEffect {
-    data class ShowSnackbar(
-        @param:StringRes val resId: Int,
-        val args: List<Any> = emptyList()
-    ) : MainUiEffect
+    data class ShowSnackbar(val message: UiText) : MainUiEffect
 }

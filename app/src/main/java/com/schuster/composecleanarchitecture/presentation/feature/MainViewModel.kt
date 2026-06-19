@@ -6,6 +6,7 @@ import com.schuster.composecleanarchitecture.R
 import com.schuster.composecleanarchitecture.domain.model.DomainResult
 import com.schuster.composecleanarchitecture.domain.usecase.GetPostUseCase
 import com.schuster.composecleanarchitecture.presentation.mapper.toPresentation
+import com.schuster.composecleanarchitecture.utils.UiText
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -57,7 +58,7 @@ class MainViewModel(private val useCase: GetPostUseCase) : ViewModel() {
     private fun getNewPost(id: String) {
         viewModelScope.launch {
             if (id.isBlank()) {
-                _uiEffect.send(MainUiEffect.ShowSnackbar(resId = R.string.search_not_empty))
+                _uiEffect.send(MainUiEffect.ShowSnackbar(message = UiText.StringResource(R.string.search_not_empty)))
                 _uiState.update { it.copy(status = MainStatus.InputTextError) }
                 return@launch
             }
