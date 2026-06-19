@@ -4,7 +4,7 @@ import retrofit2.HttpException
 import java.io.IOException
 import java.util.concurrent.TimeoutException
 
-fun handleApiError(exception: Throwable): Any =
+fun handleApiError(exception: Throwable): String =
     when (exception) {
         is TimeoutException -> "Request timed out. Please try again."
         is IOException -> "Network error. Please check your connection."

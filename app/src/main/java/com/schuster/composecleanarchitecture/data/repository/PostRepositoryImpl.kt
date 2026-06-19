@@ -19,7 +19,7 @@ class PostRepositoryImpl(
             val response = api.getPost(id)
             DomainResult.Success(response.toDomain())
         } catch (e: Exception) {
-            DomainResult.Error(handleApiError(e).toString())
+            DomainResult.Error(handleApiError(e))
         }
     }
 }
