@@ -25,28 +25,27 @@ import kotlinx.coroutines.launch
  * [SOLID: D - Dependency Inversion Principle]
  * Depende da abstração [GetPostUseCase], não da implementação concreta [GetPostUseCaseImpl].
  */
-class MainViewModel(private val useCase: GetPostUseCase) : ViewModel() {
+class PostViewModel(private val useCase: GetPostUseCase) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(UiState())
+    private val _uiState = MutableStateFlow(PostUiState())
     val uiState = _uiState.asStateFlow()
 
     /**
      * [Channel] com capacidade BUFFERED garante que efeitos de disparo único (como Snackbars)
      * nunca sejam perdidos, mesmo que a tela não esteja coletando no momento exato da emissão
-     * (ex.: app em background ou durante recomposição). [MutableSharedFlow] sem replay não oferece
-     * essa garantia.
+     * (ex.: app em background ou durante recomposição).
      */
-    private val _uiEffect = Channel<MainUiEffect>(Channel.BUFFERED)
+    private val _uiEffect = Channel<PostUiEffect>(Channel.BUFFERED)
     val uiEffect = _uiEffect.receiveAsFlow()
 
     init {
-        processIntent(MainIntent.OnSearch)
+        processIntent(PostIntent.OnSearch)
     }
 
-    fun processIntent(intent: MainIntent) {
+    fun processIntent(intent: PostIntent) {
         when (intent) {
-            is MainIntent.OnValueChange -> handleValueChange(intent.searchText)
-            is MainIntent.OnSearch -> getNewPost(_uiState.value.textSearch)
+            is PostIntent.OnValueChange -> handleValueChange(intent.searchText)
+            is PostIntent.OnSearch -> getNewPost(_uiState.value.textSearch)
         }
     }
 
@@ -58,25 +57,25 @@ class MainViewModel(private val useCase: GetPostUseCase) : ViewModel() {
     private fun getNewPost(id: String) {
         viewModelScope.launch {
             if (id.isBlank()) {
-                _uiEffect.send(MainUiEffect.ShowSnackbar(message = UiText.StringResource(R.string.search_not_empty)))
-                _uiState.update { it.copy(status = MainStatus.InputTextError) }
+                _uiEffect.send(PostUiEffect.ShowSnackbar(message = UiText.StringResource(R.string.search_not_empty)))
+                _uiState.update { it.copy(status = PostStatus.InputTextError) }
                 return@launch
             }
 
-            _uiState.update { it.copy(status = MainStatus.Loading) }
+            _uiState.update { it.copy(status = PostStatus.Loading) }
 
             when (val domainResult = useCase(id.toInt())) {
                 is DomainResult.Success -> {
                     _uiState.update { currentState ->
                         currentState.copy(
-                            status = MainStatus.Success(data = domainResult.data.toPresentation())
+                            status = PostStatus.Success(data = domainResult.data.toPresentation())
                         )
                     }
                 }
                 is DomainResult.Error -> {
                     _uiState.update { currentState ->
                         currentState.copy(
-                            status = MainStatus.Error(message = domainResult.message)
+                            status = PostStatus.Error(message = domainResult.message)
                         )
                     }
                 }

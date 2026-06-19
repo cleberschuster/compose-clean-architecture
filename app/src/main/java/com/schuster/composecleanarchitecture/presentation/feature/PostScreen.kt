@@ -16,7 +16,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -28,10 +27,6 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleEventObserver
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.schuster.composecleanarchitecture.presentation.components.ErrorScreen
 import com.schuster.composecleanarchitecture.presentation.components.ErrorScreenInputSearch
@@ -42,8 +37,8 @@ import com.schuster.composecleanarchitecture.utils.TestTags
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun MainScreen(
-    viewModel: MainViewModel = koinViewModel(),
+fun PostScreen(
+    viewModel: PostViewModel = koinViewModel(),
     snackbarHostState: SnackbarHostState = remember { SnackbarHostState() }
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -52,7 +47,7 @@ fun MainScreen(
     LaunchedEffect(Unit) {
         viewModel.uiEffect.collect { uiEffect ->
             when (uiEffect) {
-                is MainUiEffect.ShowSnackbar -> {
+                is PostUiEffect.ShowSnackbar -> {
                     snackbarHostState.showSnackbar(
                         message = uiEffect.message.asString(context)
                     )
@@ -61,7 +56,7 @@ fun MainScreen(
         }
     }
 
-    MainScreenContent(
+    PostScreenContent(
         uiStateValue = uiState,
         snackbarHostState = snackbarHostState,
         onIntent = viewModel::processIntent
@@ -70,28 +65,12 @@ fun MainScreen(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainScreenContent(
-    uiStateValue: UiState,
+fun PostScreenContent(
+    uiStateValue: PostUiState,
     snackbarHostState: SnackbarHostState,
-    onIntent: (MainIntent) -> Unit
+    onIntent: (PostIntent) -> Unit
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
-//    val lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current
-
-//    DisposableEffect(lifecycleOwner) {
-//        val lifecycleObserver = LifecycleEventObserver { _, event ->
-//            when (event) {
-//                Lifecycle.Event.ON_START -> {
-//                    onIntent(MainIntent.OnSearch)
-//                }
-//                else -> {}
-//            }
-//        }
-//        lifecycleOwner.lifecycle.addObserver(lifecycleObserver)
-//        onDispose {
-//            lifecycleOwner.lifecycle.removeObserver(lifecycleObserver)
-//        }
-//    }
 
     Scaffold(
         topBar = {
@@ -100,14 +79,14 @@ fun MainScreenContent(
                     SearchTopBar(
                         currentSearchText = uiStateValue.textSearch,
                         onSearchTextChanged = {
-                            onIntent(MainIntent.OnValueChange(it))
+                            onIntent(PostIntent.OnValueChange(it))
                         },
                         onSearchDispatched = {
                             keyboardController?.hide()
-                            onIntent(MainIntent.OnSearch)
+                            onIntent(PostIntent.OnSearch)
                         },
                         onCleanTextPressed = {
-                            onIntent(MainIntent.OnValueChange(""))
+                            onIntent(PostIntent.OnValueChange(""))
                         },
                     )
                 },
@@ -120,12 +99,12 @@ fun MainScreenContent(
             SnackbarHost(hostState = snackbarHostState)
         }
     ) { paddingValues ->
-        MainScreenUiState(uiStateValue, paddingValues)
+        PostScreenUiState(uiStateValue, paddingValues)
     }
 }
 
 @Composable
-fun MainScreenUiState(uiStateValue: UiState, paddingValues: PaddingValues) {
+fun PostScreenUiState(uiStateValue: PostUiState, paddingValues: PaddingValues) {
     Column(
         modifier = Modifier
             .padding(paddingValues)
@@ -135,7 +114,7 @@ fun MainScreenUiState(uiStateValue: UiState, paddingValues: PaddingValues) {
         horizontalAlignment = Alignment.Start
     ) {
         when (val status = uiStateValue.status) {
-            is MainStatus.Success -> {
+            is PostStatus.Success -> {
                 Text(
                     modifier = Modifier
                         .padding(top = 8.dp, start = 16.dp, end = 16.dp, bottom = 8.dp)
@@ -173,7 +152,7 @@ fun MainScreenUiState(uiStateValue: UiState, paddingValues: PaddingValues) {
                 )
             }
 
-            is MainStatus.Error -> {
+            is PostStatus.Error -> {
                 ErrorScreen(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -182,15 +161,15 @@ fun MainScreenUiState(uiStateValue: UiState, paddingValues: PaddingValues) {
                 )
             }
 
-            MainStatus.Loading -> ShimmerScreen()
+            PostStatus.Loading -> ShimmerScreen()
 
-            MainStatus.InputTextError -> ErrorScreenInputSearch(
+            PostStatus.InputTextError -> ErrorScreenInputSearch(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 48.dp)
             )
 
-            MainStatus.Idle -> {}
+            PostStatus.Idle -> {}
         }
     }
 }
