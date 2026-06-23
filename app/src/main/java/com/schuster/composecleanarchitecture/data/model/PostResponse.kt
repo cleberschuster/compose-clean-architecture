@@ -5,8 +5,7 @@ import com.schuster.composecleanarchitecture.domain.model.ObjectDomain
 
 /**
  * [Clean Architecture: Data Model]
- * Aqui a nulidade é permitida e esperada, pois os dados vêm de uma fonte externa (API)
- * que pode falhar ou omitir campos.
+ * Aqui a nulidade é permitida e esperada.
  */
 data class PostResponse(
     @SerializedName("postId")
@@ -26,13 +25,13 @@ data class PostResponse(
 )
 
 /**
- * O Mapper na camada de Data é responsável por "sanitizar" os dados.
- * Ele converte os nulos da API em valores seguros para o Domínio.
+ * O Mapper na camada de Data agora usa valores NEUTROS (vazio ou zero).
+ * Ele não decide o texto que o usuário verá, apenas garante que o dado não seja nulo.
  */
 fun PostResponse.toDomain() = ObjectDomain(
     postId = postId ?: 0,
     id = id ?: 0,
-    email = email ?: "E-mail não informado",
-    name = name ?: "Anônimo",
+    email = email ?: "",
+    name = name ?: "",
     comment = comment ?: ""
 )
