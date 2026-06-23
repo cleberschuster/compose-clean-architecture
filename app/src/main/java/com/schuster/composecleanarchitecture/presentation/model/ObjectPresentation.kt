@@ -1,10 +1,14 @@
 package com.schuster.composecleanarchitecture.presentation.model
 
+/**
+ * [Clean Architecture: Presentation Model]
+ * Modelo otimizado para a UI. Ao remover nulidades aqui, evitamos verificações
+ * constantes dentro dos componentes Compose, tornando o código da UI mais limpo.
+ */
 data class ObjectPresentation(
-    val postId: Int? = null,
-    val id: Int? = null,
-    val email: String? = null,
-    val name: String? = null,
-    val comment: String? = null
+    val postId: String,
+    val id: String,
+    val email: String,
+    val name: String,
+    val comment: String
 )
-
