@@ -12,7 +12,7 @@ class GetPostUseCaseImpl(
         return when (val result = repository.getPost(id)) {
             is DomainResult.Success -> {
                 val post = result.data
-                if (post.id != null && post.id < 1000) {
+                if (post.id < 1000) {
                     DomainResult.Success(post)
                 } else {
                     DomainResult.Error("Post não encontrado ou ID inválido (Regra de Negócio)")
