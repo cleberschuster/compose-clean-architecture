@@ -22,8 +22,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
+import com.schuster.composecleanarchitecture.utils.TestTags
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
@@ -75,7 +77,7 @@ fun SearchTopBar(
             singleLine = true,
             maxLines = 1,
             leadingIcon = {
-                SearchIcon()
+                SearchIcon(onSearchClick = onSearchDispatched)
             },
             trailingIcon = {
                 if (currentSearchText.isNotEmpty()) {
@@ -111,10 +113,12 @@ fun DefaultIcon(
 }
 
 @Composable
-fun SearchIcon() {
+fun SearchIcon(onSearchClick: () -> Unit = {}) {
     DefaultIcon(
+        modifier = Modifier.testTag(TestTags.CLICK_SEARCH),
         searchIcon = Icons.Filled.Search,
         contentDescription = stringResource(id = R.string.icon_search),
+        onIconClickAction = onSearchClick,
         iconColor = Color(0xFF5F6368) // Ícone de busca cinza escuro para melhor contraste
     )
 }
