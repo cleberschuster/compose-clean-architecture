@@ -3,7 +3,7 @@ package com.schuster.composecleanarchitecture.data.repository
 import com.schuster.composecleanarchitecture.data.api.PostApiService
 import com.schuster.composecleanarchitecture.data.model.PostResponse
 import com.schuster.composecleanarchitecture.domain.model.DomainResult
-import com.schuster.composecleanarchitecture.domain.model.ObjectDomain
+import com.schuster.composecleanarchitecture.domain.model.Post
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
@@ -37,7 +37,7 @@ class PostRepositoryImplTest {
 
         coVerify(exactly = 1) { api.getPost(5) }
         assertTrue(result is DomainResult.Success)
-        val expectedData = ObjectDomain(
+        val expectedData = Post(
             postId = 1,
             id = 5,
             email = "test@domain.com",

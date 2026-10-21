@@ -1,35 +1,25 @@
 package com.schuster.composecleanarchitecture.data.repository
 
 import com.schuster.composecleanarchitecture.data.api.PostApiService
-import com.schuster.composecleanarchitecture.data.model.toDomain
+import com.schuster.composecleanarchitecture.data.mapper.toDomain
 import com.schuster.composecleanarchitecture.domain.model.DomainResult
-import com.schuster.composecleanarchitecture.domain.model.ObjectDomain
+import com.schuster.composecleanarchitecture.domain.model.Post
 import com.schuster.composecleanarchitecture.domain.repository.PostRepository
 import com.schuster.composecleanarchitecture.utils.handleApiError
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 
 /**
- * [SOLID: S - Single Responsibility Principle (Princípio da Responsabilidade Única)]
- * A responsabilidade exclusiva desta classe é buscar posts a partir da API remota utilizando a
- * interface [PostApiService] e converter o resultado para o modelo aceito pelo domínio.
- * Ela não toma nenhuma decisão de negócio ou de lógica de apresentação.
- *
- * [SOLID: L - Liskov Substitution Principle (Princípio da Substituição de Liskov)]
- * Como [PostRepositoryImpl] implementa a interface [PostRepository] de forma fiel, qualquer cliente
- * que dependa da interface [PostRepository] pode utilizá-la sem precisar conhecer a implementação concreta,
- * sem quebras de contrato ou comportamentos inesperados.
- *
- * [SOLID: D - Dependency Inversion Principle (Princípio da Inversão de Dependência)]
- * O repositório depende de abstrações injetadas no seu construtor (como o [CoroutineDispatcher] e o
- * [PostApiService]). Não há acoplamento rígido de instanciação manual de dependências aqui.
+ * [SOLID: S - Single Responsibility Principle]
+ * Busca posts a partir da API remota utilizando [PostApiService] e converte
+ * o resultado para o modelo de domínio [Post].
  */
 class PostRepositoryImpl(
     private val api: PostApiService,
     private val dispatcherIO: CoroutineDispatcher
 ) : PostRepository {
 
-    override suspend fun getPost(id: Int): DomainResult<ObjectDomain> = withContext(dispatcherIO) {
+    override suspend fun getPost(id: Int): DomainResult<Post> = withContext(dispatcherIO) {
         try {
             val response = api.getPost(id)
             DomainResult.Success(response.toDomain())
@@ -38,6 +28,3 @@ class PostRepositoryImpl(
         }
     }
 }
-
-
-

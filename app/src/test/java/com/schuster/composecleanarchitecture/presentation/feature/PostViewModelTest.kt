@@ -2,7 +2,7 @@ package com.schuster.composecleanarchitecture.presentation.feature
 
 import com.schuster.composecleanarchitecture.R
 import com.schuster.composecleanarchitecture.domain.model.DomainResult
-import com.schuster.composecleanarchitecture.domain.model.ObjectDomain
+import com.schuster.composecleanarchitecture.domain.model.Post
 import com.schuster.composecleanarchitecture.domain.usecase.GetPostUseCase
 import com.schuster.composecleanarchitecture.presentation.mapper.toPresentation
 import com.schuster.composecleanarchitecture.util.MainDispatcherRule
@@ -61,7 +61,7 @@ class PostViewModelTest {
 
     @Test
     fun `processIntent OnSearch with valid id success should update state to Success`() = runTest {
-        val domainData = ObjectDomain(
+        val domainData = Post(
             postId = 1,
             id = 100,
             email = "test@example.com",

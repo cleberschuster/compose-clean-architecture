@@ -1,7 +1,7 @@
 package com.schuster.composecleanarchitecture.domain.usecase
 
 import com.schuster.composecleanarchitecture.domain.model.DomainResult
-import com.schuster.composecleanarchitecture.domain.model.ObjectDomain
+import com.schuster.composecleanarchitecture.domain.model.Post
 import com.schuster.composecleanarchitecture.domain.repository.PostRepository
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -17,7 +17,7 @@ class GetPostUseCaseTest {
 
     @Test
     fun `invoke should return Success when repository succeeds`() = runTest {
-        val expectedDomain = ObjectDomain(
+        val expectedDomain = Post(
             postId = 1,
             id = 10,
             email = "user@test.com",

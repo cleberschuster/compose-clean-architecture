@@ -1,10 +1,9 @@
 package com.schuster.composecleanarchitecture.data.mapper
 
 import com.schuster.composecleanarchitecture.data.model.PostResponse
-import com.schuster.composecleanarchitecture.data.model.toDomain
-import com.schuster.composecleanarchitecture.domain.model.ObjectDomain
+import com.schuster.composecleanarchitecture.domain.model.Post
 import com.schuster.composecleanarchitecture.presentation.mapper.toPresentation
-import com.schuster.composecleanarchitecture.presentation.model.ObjectPresentation
+import com.schuster.composecleanarchitecture.presentation.model.PostUiModel
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
@@ -49,18 +48,18 @@ class PostMapperTest {
     }
 
     @Test
-    fun `ObjectDomain toPresentation should format values into strings for UI`() {
-        val domain = ObjectDomain(
+    fun `Post toPresentation should format values into strings for UI`() {
+        val domain = Post(
             postId = 42,
             id = 99,
-            email = "ui@test.com",
+            email = "UI@TEST.COM",
             name = "Compose UI",
             comment = "Mapping to UI model"
         )
 
         val presentation = domain.toPresentation()
 
-        val expected = ObjectPresentation(
+        val expected = PostUiModel(
             postId = "42",
             id = "99",
             email = "ui@test.com",

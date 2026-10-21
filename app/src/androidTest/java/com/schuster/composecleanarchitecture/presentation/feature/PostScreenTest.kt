@@ -9,7 +9,7 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.schuster.composecleanarchitecture.presentation.model.ObjectPresentation
+import com.schuster.composecleanarchitecture.presentation.model.PostUiModel
 import com.schuster.composecleanarchitecture.utils.TestTags
 import org.junit.Assert.assertEquals
 import org.junit.Rule
@@ -40,7 +40,7 @@ class PostScreenTest {
 
     @Test
     fun postScreen_showsPostDetails_whenStatusIsSuccess() {
-        val postData = ObjectPresentation(
+        val postData = PostUiModel(
             postId = "1",
             id = "100",
             email = "compose@test.com",
