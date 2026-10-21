@@ -46,12 +46,22 @@ class PostViewModel(private val useCase: GetPostUseCase) : ViewModel() {
         when (intent) {
             is PostIntent.OnValueChange -> handleValueChange(intent.searchText)
             is PostIntent.OnSearch -> getNewPost(_uiState.value.textSearch)
+            is PostIntent.OnClearSearch -> handleClearSearch()
         }
     }
 
     private fun handleValueChange(searchText: String) {
         val onlyNumbers = searchText.filter { it.isDigit() }
         _uiState.update { it.copy(textSearch = onlyNumbers) }
+    }
+
+    private fun handleClearSearch() {
+        _uiState.update {
+            it.copy(
+                textSearch = "",
+                status = PostStatus.Idle
+            )
+        }
     }
 
     private fun getNewPost(id: String) {

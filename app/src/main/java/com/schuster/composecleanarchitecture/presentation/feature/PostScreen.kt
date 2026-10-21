@@ -86,7 +86,7 @@ fun PostScreenContent(
                             onIntent(PostIntent.OnSearch)
                         },
                         onCleanTextPressed = {
-                            onIntent(PostIntent.OnValueChange(""))
+                            onIntent(PostIntent.OnClearSearch)
                         },
                     )
                 },

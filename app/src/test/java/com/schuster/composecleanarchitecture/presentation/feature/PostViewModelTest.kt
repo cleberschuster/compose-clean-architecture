@@ -98,4 +98,16 @@ class PostViewModelTest {
         val errorStatus = currentState.status as PostStatus.Error
         assertEquals(errorMessage, errorStatus.message)
     }
+
+    @Test
+    fun `processIntent OnClearSearch should clear textSearch and set status to Idle`() = runTest {
+        val viewModel = PostViewModel(useCase)
+        viewModel.processIntent(PostIntent.OnValueChange("123"))
+
+        viewModel.processIntent(PostIntent.OnClearSearch)
+
+        val state = viewModel.uiState.value
+        assertEquals("", state.textSearch)
+        assertEquals(PostStatus.Idle, state.status)
+    }
 }
